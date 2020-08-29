@@ -6,9 +6,6 @@ from werkzeug.utils import secure_filename
 # Define a flask app
 app = Flask(__name__)
 
-print('Model loaded. Check http://127.0.0.1:5000/')
-
-
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
