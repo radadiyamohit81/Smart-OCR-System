@@ -3,8 +3,10 @@ import os
 from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 
-# Define a flask app
 app = Flask(__name__)
+
+print('Model loaded. Check http://127.0.0.1:5000/')
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -15,12 +17,12 @@ def index():
 def upload():
     if request.method == 'POST':
         f = request.files['file']
-        basepath = os.path.dirname(__file__)
-        file_path = os.path.join(
-            basepath, 'uploads', secure_filename(f.filename))
-        f.save(file_path)
+        folder = os.path.join(app.config['TEMP_FOLDER'], str(os.getpid()))
+        os.mkdir(folder)
+        input_file = os.path.join(folder, secure_filename(f.filename))
+        f.save(input_file)
         pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
-        text = pytesseract.image_to_string(file_path)
+        text = pytesseract.image_to_string(input_file)
         return text
     return None
 
