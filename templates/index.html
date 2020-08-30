@@ -24,9 +24,11 @@
             <div class="loader" style="display:none;"></div>
         </div>
         <div class="col-sm-6">
-            <h6 id="result">
-                <textarea> </textarea>
-            </h6>
+            {% if extracted_text %}
+                <h6 id="result">
+                    <textarea>{{ extracted_text }} </textarea>
+                </h6>
+            {% else %}
         </div>
     </div>
 </div>
