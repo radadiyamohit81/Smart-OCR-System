@@ -10,8 +10,9 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
+print('Check http://127.0.0.1:5000/')
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-app.config['TEMP_FOLDER'] = '/tmp'
+UPLOAD_FOLDER = '/uploads/'
 
 
 def allowed_file(filename):
@@ -28,17 +29,9 @@ def upload():
     if request.method == 'POST':
         f = request.files['file']
         if f and allowed_file(f.filename):
-            if not os.path.exists(os.path.join(app.config['TEMP_FOLDER'], str(os.getpid()))):
-                folder = os.path.join(app.config['TEMP_FOLDER'], str(os.getpid()))
-            else:
-                shutil.rmtree(os.path.join(app.config['TEMP_FOLDER'], str(os.getpid())))
-                # os.remove(os.path.join(app.config['TEMP_FOLDER'],str(os.getpid())))
-                folder = os.path.join(app.config['TEMP_FOLDER'], str(os.getpid()))
-            os.mkdir(folder)
-            input_file = os.path.join(folder, secure_filename(f.filename))
-            f.save(input_file)
+            f.save(os.path.join(os.getcwd() + UPLOAD_FOLDER, f.filename))
             pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
-            text = pytesseract.image_to_string(input_file)
+            text = pytesseract.image_to_string(f)
             return text
     return None
 
