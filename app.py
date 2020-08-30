@@ -10,7 +10,6 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-print('Check http://127.0.0.1:5000/')
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 UPLOAD_FOLDER = '/uploads/'
 
@@ -32,7 +31,7 @@ def upload():
             f.save(os.path.join(os.getcwd() + UPLOAD_FOLDER, f.filename))
             pytesseract.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
             text = pytesseract.image_to_string(f)
-            return text
+            return render_template('upload.html',msg='Successfully processed',extracted_text=text)
     return None
 
 
