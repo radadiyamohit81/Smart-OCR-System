@@ -1,4 +1,4 @@
-# heroku-app
+# Smart OCR System
 
 * Here is the solution of Smart OCR System
 
